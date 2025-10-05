@@ -17,6 +17,11 @@ in
       daemon = {
         enable = true;
       };
+      updater = {
+        enable = true;
+        interval = "hourly";
+        frequency = 24;
+      };
       fangfrisch = {
         enable = true;
       };

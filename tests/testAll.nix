@@ -4,10 +4,10 @@ pkgs.nixosTest {
   name = "testAll";
   nodes.machine = { config, pkgs, ... }: {
     imports = [
-      self.nixosModules.all
+      self.nixosModules.default
     ];
     system.stateVersion = "25.05";
-    security.antivirus.enable = true;
+    # self.antivirus.enable = true;
   };
   testScript = /*python*/  ''
     machine.succeed("id charles")

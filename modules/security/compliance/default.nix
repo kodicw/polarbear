@@ -12,14 +12,7 @@ in
     enable = lib.mkEnableOption "ClamAV";
   };
 
-  config =
-    let
-      auditd_logpath = "/var/log/audit/audit.log";
-    in
-    lib.mkIf cfg.enable
-      {
-        # Best practices
-        services.telegraf.extraConfig.inputs.auditd.log_path = auditd_logpath;
+  config = lib.mkIf cfg.enable {
         security = {
           auditd.enable = true;
           audit = {
@@ -30,8 +23,7 @@ in
               # =================================================================
               "-D" # Clear all previous rules
               "-b 8192" # Set max backlog to 8192
-              "-f 2" # Panic on failure (halt the system)
-              "-e 2" # Make the rules immutable
+              "-f 1" # Log on failure (don't halt the system)
 
               # =================================================================
               # File and Directory Auditing (System-critical files)
@@ -91,12 +83,6 @@ in
 
               # Monitor for file deletions
               "-a always,exit -F arch=b64 -S unlink,unlinkat,rmdir -k file_deletion"
-
-              # =================================================================
-              # Immutable Rules
-              # =================================================================
-              # This rule must be the very last rule in the file
-              "-e 2"
             ];
           };
           apparmor = {
