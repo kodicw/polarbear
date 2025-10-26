@@ -4,9 +4,7 @@
     nvim-nu
   ];
   plugins = {
-    none-ls = {
-      enable = true;
-    };
+    none-ls.enable = true;
     lsp-lines.enable = true;
     web-devicons.enable = true;
     chadtree = {
@@ -20,9 +18,31 @@
     todo-comments.enable = true;
     toggleterm.enable = true;
     neogit.enable = true;
-    dap.enable = true;
+    dap = {
+      enable = true;
+      adapters.executables.lldb = {
+        command = "${pkgs.lldb}/bin/lldb-vscode";
+      };
+      configurations.rust = [
+        {
+          name = "Launch";
+          type = "lldb";
+          request = "launch";
+          program = {
+            __raw = ''
+              function()
+                return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/target/debug/', 'file')
+              end
+            '';
+          };
+          cwd = "\${workspaceFolder}";
+          stopOnEntry = false;
+        }
+      ];
+    };
     dap-python.enable = true;
     dap-ui.enable = true;
+    dap-virtual-text.enable = true;
     multicursors.enable = true;
     endwise.enable = true;
     mini = {
@@ -33,18 +53,20 @@
     };
     avante = {
       enable = true;
-      settings = {
-        provider = "ollama";
-        ollama = {
-          model = "qwen3:8b";
-        };
-      };
     };
     bufferline.enable = true;
     luasnip.enable = true;
     treesitter.enable = true;
     lspkind.enable = true;
-    lint.enable = true;
+    lint = {
+      enable = true;
+      lintersByFt = {
+        rust = [ "clippy" ];
+        nix = [ "nix" ];
+        python = [ "ruff" ];
+        markdown = [ "markdownlint" ];
+      };
+    };
     wtf.enable = true;
     vim-surround.enable = true;
 
