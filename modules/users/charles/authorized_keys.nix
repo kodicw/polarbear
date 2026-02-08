@@ -1,7 +1,6 @@
 [
   "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICiDe2CMnDgWjXqMpQHxCSOmrjuAWwZazYPORZXlr2SF u0_a518@localhost"
   "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFv8kP8LWCSGweBHEl/AmxKMLat2Y2RWonKqDSO6RrWb charles@mainframe"
-  "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILzx49PUFSJcyzSQH1x59VmF1quAyG6f87uf8cdpKLDu deck@steamdeck"
-  # "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDNukPre6wHk87oas5iQnTg4SDmwq+lw8SAuElR/L1iM root@localhost"
-  "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEAqHet7WTj97b3eX85U3BbeqK7QpdGcMy969DY8rTeq charles@node-nadia"
+  "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIELV1RjFZ4PtSzmdtoKjbagU9H7YOYO/tTpepGLVndi droid@localhos”"
+
 ]
