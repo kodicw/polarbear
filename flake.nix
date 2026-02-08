@@ -16,6 +16,10 @@
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
+      unfreepkgs = import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
     in
     {
       packages.${system} = {
@@ -32,7 +36,7 @@
         tools-red = import ./packages/tools/red { inherit pkgs; };
         dev-python = import ./packages/development/python { inherit pkgs; };
         dev-tools = import ./packages/development/tools { inherit pkgs; };
-        dev-android = import ./packages/development/android { inherit pkgs; };
+        dev-android = import ./packages/development/android { inherit unfreepkgs; };
         desktop-apps = import ./packages/desktop { inherit pkgs; };
         gaming = import ./packages/gaming { inherit pkgs; };
       };
