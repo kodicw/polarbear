@@ -23,6 +23,7 @@
           inherit pkgs;
           module = import ./packages/nixvim;
         };
+
         tools-net = import ./packages/tools/networking { inherit pkgs; };
         tools-ssh = import ./packages/tools/ssh { inherit pkgs; };
         tools-nix = import ./packages/tools/nix { inherit pkgs; };
@@ -52,8 +53,8 @@
           ids = import ./modules/security/ids;
           antivirus = import ./modules/security/anti_virus;
           audit = import ./modules/security/compliance;
-          monitoring = import ./modules/security/monitoring;
         };
+        monitoring = import ./modules/security/monitoring;
 
         # Users
         users = {
