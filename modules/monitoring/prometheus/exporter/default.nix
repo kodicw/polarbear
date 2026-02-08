@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, lib, ... }:
 {
   services.prometheus.exporters = {
     node = {
@@ -22,6 +22,9 @@
         "--collector.ntp.protocol-version=4"
         "--no-collector.mdadm"
       ];
+    };
+    tailscale = lib.mkIf config.services.tailscale.enable {
+      enable = true;
     };
   };
 }
