@@ -36,7 +36,7 @@
         tools-red = import ./packages/tools/red { inherit pkgs; };
         dev-python = import ./packages/development/python { inherit pkgs; };
         dev-tools = import ./packages/development/tools { inherit pkgs; };
-        dev-android = import ./packages/development/android { inherit unfreepkgs; };
+        dev-android = import ./packages/development/android { pkgs = unfreepkgs; };
         desktop-apps = import ./packages/desktop { inherit pkgs; };
         gaming = import ./packages/gaming { inherit pkgs; };
       };
