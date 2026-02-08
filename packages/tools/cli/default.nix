@@ -5,8 +5,11 @@ pkgs.buildEnv {
     aspell
     btop
     fastfetch
+    nb
     nushell
     proxychains
     tmux
+    typer
+    zellij
   ];
 }

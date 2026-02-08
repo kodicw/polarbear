@@ -5,6 +5,7 @@ pkgs.buildEnv {
     banana-cursor
     blender
     discord
+    firefox
     freecad-wayland
     ghostty
     gimp
@@ -14,6 +15,9 @@ pkgs.buildEnv {
     obs-studio
     proton-pass
     protonmail-desktop
+    protonvpn-gui
+    rclone-browser
+    remmina
     spotify
     vlc
   ];

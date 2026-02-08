@@ -2,25 +2,26 @@
 pkgs.buildEnv {
   name = "dev-tools";
   paths = with pkgs; [
-    git
-    chromedriver
-    uv
-    fzf
-    minicom
-    ffmpeg
     bruno
+    bun
+    chromedriver
+    devenv
+    ffmpeg
+    fzf
+    gcc
+    git
+    go
     just
-    lazysql
     lazydocker
     lazygit
+    lazysql
     lua
-    pixi
-    go
-    gcc
-    bun
-    nodejs
+    minicom
     nim
+    nodejs
+    pixi
     quickemu
     thonny
+    uv
   ];
 }

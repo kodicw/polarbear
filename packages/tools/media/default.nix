@@ -5,6 +5,7 @@ pkgs.buildEnv {
     mpv
     motion
     ytfzf
+    rclone
     pamixer
     ffmpeg-full
   ];
