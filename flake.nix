@@ -2,6 +2,7 @@
   description = "A very basic flake";
 
   inputs = {
+    # unstable_nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
     nixvim.url = "github:nix-community/nixvim";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
@@ -59,7 +60,10 @@
           antivirus = import ./modules/security/anti_virus;
           audit = import ./modules/security/compliance;
         };
-        monitoring = import ./modules/security/monitoring;
+        monitoring = {
+          default = import ./modules/security/monitoring;
+          prometheus = import ./modules/monitoring/prometheuss;
+        };
 
         # Users
         users = {
