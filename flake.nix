@@ -62,7 +62,7 @@
         };
         monitoring = {
           default = import ./modules/security/monitoring;
-          prometheus = import ./modules/monitoring/prometheuss;
+          prometheus = import ./modules/monitoring/prometheus;
         };
 
         # Users
