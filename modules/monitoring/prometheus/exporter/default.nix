@@ -1,5 +1,6 @@
+{ config, ... }:
 {
-  services.prometheus.exporters.node = {
+  services.prometheus.exporters.${config.networking.hostName} = {
     enable = true;
     port = 9000;
     # For the list of available collectors, run, depending on your install:
