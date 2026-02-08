@@ -28,6 +28,7 @@
         tools-ssh = import ./packages/tools/ssh { inherit pkgs; };
         tools-nix = import ./packages/tools/nix { inherit pkgs; };
         tools-sre = import ./packages/tools/sre { inherit pkgs; };
+        tools-ai = import ./packages/tools/ai { inherit pkgs; };
         tools-red = import ./packages/tools/red { inherit pkgs; };
         dev-python = import ./packages/development/python { inherit pkgs; };
         dev-tools = import ./packages/development/tools { inherit pkgs; };
