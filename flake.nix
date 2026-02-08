@@ -37,8 +37,8 @@
         dev-python = import ./packages/development/python { inherit pkgs; };
         dev-tools = import ./packages/development/tools { inherit pkgs; };
         dev-android = import ./packages/development/android { pkgs = unfreepkgs; };
-        desktop-apps = import ./packages/desktop { inherit pkgs; };
-        gaming = import ./packages/gaming { inherit pkgs; };
+        desktop-apps = import ./packages/desktop { pkgs = unfreepkgs; };
+        gaming = import ./packages/gaming { pkgs = unfreepkgs; };
       };
 
       nixosModules = {
