@@ -23,8 +23,8 @@
         "--no-collector.mdadm"
       ];
     };
-    tailscale = lib.mkIf config.services.tailscale.enable {
-      enable = true;
-    };
+    # tailscale = lib.mkIf config.services.tailscale.enable {
+    #   enable = true;
+    # };
   };
 }
