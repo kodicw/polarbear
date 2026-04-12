@@ -1,8 +1,7 @@
 {
-  description = "A very basic flake";
+  description = "NixOS flake with modules and packages for desktop, development, and security";
 
   inputs = {
-    # unstable_nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
     nixvim.url = "github:nix-community/nixvim";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
@@ -61,7 +60,7 @@
           audit = import ./modules/security/compliance;
         };
         monitoring = {
-          default = import ./modules/security/monitoring;
+          default = import ./modules/monitoring;
           prometheus = {
             exporter = import ./modules/monitoring/prometheus/exporter;
           };
