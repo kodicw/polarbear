@@ -4,7 +4,11 @@
 set -e
 
 echo "Running nix flake check..."
-nix flake check --show-trace
+nix flake check --accept-flake-config
+
+# Build docs to ensure they generate correctly
+echo "Building docs package..."
+nix build --accept-flake-config .#packages.x86_64-linux.docs
 
 # Try to format nix files if nixfmt is available
 if command -v nixfmt &> /dev/null; then

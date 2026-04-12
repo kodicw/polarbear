@@ -1,10 +1,19 @@
 {
   description = "NixOS flake with modules and packages for desktop, development, and security";
 
+  nixConfig = {
+    extra-substituters = [ "https://nix-community.cachix.org" ];
+    extra-trusted-public-keys = [ "nix-community.cachix.org-1:mB9FSh9qf2hCFMx2BvUHp70UH4mR4ZdxR1t5VoCqQMo=" ];
+  };
+
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
     nixvim.url = "github:nix-community/nixvim";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
+    nixdoc = {
+      url = "github:nix-community/nixdoc";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -12,6 +21,7 @@
       self,
       nixpkgs,
       nixvim,
+      nixdoc,
     }@inputs:
     let
       system = "x86_64-linux";
@@ -22,11 +32,24 @@
       };
     in
     {
+      lib = import ./lib;
+
       packages.${system} = {
         nixvim = nixvim.legacyPackages."${system}".makeNixvimWithModule {
           inherit pkgs;
           module = import ./packages/nixvim;
         };
+
+        docs = pkgs.runCommand "polarbear-docs" {
+          preferLocalBuild = true;
+        } ''
+          mkdir -p $out
+          ${nixdoc.packages.x86_64-linux.default}/bin/nixdoc \
+            --file ${./lib}/default.nix \
+            --category "" \
+            --description "Polarbear library functions" \
+            > "$out/index.md"
+        '';
 
         tools-net = import ./packages/tools/networking { inherit pkgs; };
         tools-ssh = import ./packages/tools/ssh { inherit pkgs; };
