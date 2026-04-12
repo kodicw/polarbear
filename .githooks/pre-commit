@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# pre-commit hook: run flake check and format
+
+set -e
+
+echo "Running nix flake check..."
+nix flake check
+
+echo "Checking for trailing whitespace..."
+if git diff --cached --name-only | xargs -I{} grep -l "\s$" {} 2>/dev/null; then
+    echo "Warning: trailing whitespace detected"
+fi
+
+echo "Pre-commit checks passed!"

@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# pre-push hook: run flake check and optionally format nix files
+
+set -e
+
+echo "Running nix flake check..."
+nix flake check --show-trace
+
+# Try to format nix files if nixfmt is available
+if command -v nixfmt &> /dev/null; then
+    echo "Formatting nix files with nixfmt..."
+    find . -name "*.nix" -type f -not -path "./.git/*" -exec nixfmt {} \;
+    git add -A
+else
+    echo "Skipping formatting (nixfmt not installed)"
+fi
+
+echo "Pre-push checks passed!"
