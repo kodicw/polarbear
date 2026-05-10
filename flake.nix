@@ -17,11 +17,11 @@
   };
 
   outputs =
-    {
-      self,
-      nixpkgs,
-      nixvim,
-      nixdoc,
+    { self
+    , nixpkgs
+    , nixvim
+    , nixdoc
+    ,
     }@inputs:
     let
       system = "x86_64-linux";
@@ -40,9 +40,10 @@
           module = import ./packages/nixvim;
         };
 
-        docs = pkgs.runCommand "polarbear-docs" {
-          preferLocalBuild = true;
-        } ''
+        docs = pkgs.runCommand "polarbear-docs"
+          {
+            preferLocalBuild = true;
+          } ''
           mkdir -p $out
           ${nixdoc.packages.x86_64-linux.default}/bin/nixdoc \
             --file ${./lib}/default.nix \
@@ -62,6 +63,12 @@
         dev-android = import ./packages/development/android { pkgs = unfreepkgs; };
         desktop-apps = import ./packages/desktop { pkgs = unfreepkgs; };
         gaming = import ./packages/gaming { pkgs = unfreepkgs; };
+      };
+
+      devShells.${system}.default = pkgs.mkShell {
+        packages = with pkgs; [
+          nixpkgs-fmt
+        ];
       };
 
       nixosModules = {
