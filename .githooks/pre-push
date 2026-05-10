@@ -1,22 +1,40 @@
 #!/usr/bin/env bash
-# pre-push hook: run flake check and optionally format nix files
+# pre-push hook: run flake check, build docs, and format all nix files
 
 set -e
 
+echo "=== Pre-push checks ==="
+
+# --- Run nix flake check ---
 echo "Running nix flake check..."
 nix flake check --accept-flake-config
+echo "Flake check passed."
 
-# Build docs to ensure they generate correctly
+# --- Build docs to ensure they generate correctly ---
 echo "Building docs package..."
 nix build --accept-flake-config .#packages.x86_64-linux.docs
+echo "Docs build passed."
 
-# Try to format nix files if nixfmt is available
-if command -v nixfmt &> /dev/null; then
-    echo "Formatting nix files with nixfmt..."
-    find . -name "*.nix" -type f -not -path "./.git/*" -exec nixfmt {} \;
+# --- Format all unstaged nix files with nixpkgs-fmt ---
+echo "Formatting all nix files..."
+if command -v nixpkgs-fmt &> /dev/null; then
+  NIX_FILES=$(find . -name "*.nix" -type f -not -path "./.git/*" | sort)
+  if [ -n "$NIX_FILES" ]; then
+    echo "$NIX_FILES" | xargs nixpkgs-fmt
+    echo "Formatted all nix files."
+    # Stage any changes the formatter made
     git add -A
+  fi
+elif nix run nixpkgs#nixpkgs-fmt -- --help &>/dev/null 2>&1; then
+  NIX_FILES=$(find . -name "*.nix" -type f -not -path "./.git/*" | sort)
+  if [ -n "$NIX_FILES" ]; then
+    echo "$NIX_FILES" | xargs nix run nixpkgs#nixpkgs-fmt --
+    echo "Formatted all nix files."
+    git add -A
+  fi
 else
-    echo "Skipping formatting (nixfmt not installed)"
+  echo "Warning: nixpkgs-fmt not found. Skipping formatting."
+  echo "  Install it with: nix profile install nixpkgs#nixpkgs-fmt"
 fi
 
-echo "Pre-push checks passed!"
+echo "=== Pre-push checks passed! ==="

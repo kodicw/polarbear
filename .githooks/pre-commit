@@ -1,14 +1,42 @@
 #!/usr/bin/env bash
-# pre-commit hook: run flake check and format
+# pre-commit hook: auto-format nix files, run flake check, check for trailing whitespace
 
 set -e
 
-echo "Running nix flake check..."
-nix flake check
+# --- Auto-format staged nix files with nixpkgs-fmt ---
+STAGED_NIX=$(git diff --cached --name-only --diff-filter=ACM | grep '\.nix$' || true)
 
+if [ -n "$STAGED_NIX" ]; then
+  if command -v nixpkgs-fmt &> /dev/null; then
+    echo "Formatting staged nix files with nixpkgs-fmt..."
+    echo "$STAGED_NIX" | xargs nixpkgs-fmt
+    git add $STAGED_NIX
+  elif nix run nixpkgs#nixpkgs-fmt -- --help &>/dev/null 2>&1; then
+    echo "Formatting staged nix files with nixpkgs-fmt (via nix run)..."
+    echo "$STAGED_NIX" | xargs nix run nixpkgs#nixpkgs-fmt --
+    git add $STAGED_NIX
+  else
+    echo "Warning: nixpkgs-fmt not found. Skipping formatting."
+    echo "  Install it with: nix profile install nixpkgs#nixpkgs-fmt"
+  fi
+fi
+
+# --- Run nix flake check ---
+echo "Running nix flake check..."
+nix flake check --accept-flake-config
+echo "Flake check passed."
+
+# --- Check for trailing whitespace ---
 echo "Checking for trailing whitespace..."
-if git diff --cached --name-only | xargs -I{} grep -l "\s$" {} 2>/dev/null; then
-    echo "Warning: trailing whitespace detected"
+WS_FILES=$(git diff --cached --name-only --diff-filter=ACM | xargs grep -l "[[:space:]]$" 2>/dev/null || true)
+if [ -n "$WS_FILES" ]; then
+  echo "---------------------------------------------"
+  echo "WARNING: Trailing whitespace detected in:"
+  echo "$WS_FILES"
+  echo "Auto-fixing..."
+  echo "$WS_FILES" | xargs sed -i 's/[[:space:]]*$//'
+  git add $WS_FILES
+  echo "Fixed and re-staged."
 fi
 
 echo "Pre-commit checks passed!"
