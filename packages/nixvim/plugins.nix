@@ -6,16 +6,26 @@
   plugins = {
     none-ls.enable = true;
     lsp-lines.enable = true;
-    web-devicons.enable = true;
+    web-devicons.enable = false;
     chadtree = {
       enable = true;
+      settings = {
+        theme = {
+          icon_glyph_set = "ascii";
+        };
+      };
     };
     nix.enable = true;
     image = {
       enable = true;
     };
     noice.enable = true;
-    todo-comments.enable = true;
+    todo-comments = {
+      enable = true;
+      settings = {
+        signs = false;
+      };
+    };
     toggleterm.enable = true;
     neogit.enable = true;
     dap = {
@@ -54,10 +64,24 @@
     avante = {
       enable = true;
     };
-    bufferline.enable = true;
+    bufferline = {
+      enable = true;
+      settings = {
+        options = {
+          show_buffer_icons = false;
+          show_buffer_close_icons = false;
+          show_close_icon = false;
+        };
+      };
+    };
     luasnip.enable = true;
     treesitter.enable = true;
-    lspkind.enable = true;
+    lspkind = {
+      enable = true;
+      settings = {
+        mode = "text";
+      };
+    };
     lint = {
       enable = true;
       lintersByFt = {
@@ -81,7 +105,14 @@
       };
     };
 
-    lualine.enable = true;
+    lualine = {
+      enable = true;
+      settings = {
+        options = {
+          icons_enabled = false;
+        };
+      };
+    };
     notify = {
       enable = true;
       settings = {
