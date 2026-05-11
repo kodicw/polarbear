@@ -99,18 +99,6 @@
       settings = {
         skip_confirm_for_simple_edits = true;
         delete_to_trash = true;
-        columns = {
-          __raw = ''
-            {
-              { "type", icons = {
-                file = " ",
-                directory = "/",
-                link = "@",
-              } },
-              "name",
-            }
-          '';
-        };
         # view_options = {
         #   show_hidden = false;
         # };
