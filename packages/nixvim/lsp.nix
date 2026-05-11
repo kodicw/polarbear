@@ -1,7 +1,7 @@
 {
   enable = true;
   inlayHints = true;
-  
+
   keymaps = {
     diagnostic = {
       "<leader>j" = {

@@ -15,7 +15,7 @@ pkgs.buildEnv {
     obs-studio
     proton-pass
     protonmail-desktop
-    protonvpn-gui
+    proton-vpn
     rclone-browser
     remmina
     spotify

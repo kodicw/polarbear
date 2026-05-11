@@ -4,10 +4,10 @@
 }:
 let
   cfg = config.sec.bestPractices.firewall;
-  
+
   tcpPorts = lib.concatMapStringsSep ", " toString cfg.allowedTCPPorts;
   udpPorts = lib.concatMapStringsSep ", " toString cfg.allowedUDPPorts;
-  
+
   desktopRules = ''
     tcp flags syn tcp option maxseg size 1-536 drop comment "Drop SYN with suspicious MSS"
     
@@ -23,7 +23,7 @@ let
 
     tcp flags syn tcp sport 0-1023 limit rate 1/second burst 5 packets accept comment "Rate limit privileged ports"
   '';
-  
+
   serverRules = ''
     tcp flags syn tcp option maxseg size 1-536 drop comment "Drop SYN with suspicious MSS"
     
@@ -44,43 +44,43 @@ in
 {
   options.sec.bestPractices.firewall = {
     enable = lib.mkEnableOption "Hardened nftables firewall";
-    
+
     profile = lib.mkOption {
       type = lib.types.enum [ "desktop" "server" ];
       default = "desktop";
       description = "Firewall profile (desktop: strict, server: optimized for services)";
     };
-    
+
     allowedTCPPorts = lib.mkOption {
       type = lib.types.listOf lib.types.int;
       default = [ ];
       description = "Allowed TCP ports";
     };
-    
+
     allowedUDPPorts = lib.mkOption {
       type = lib.types.listOf lib.types.int;
       default = [ ];
       description = "Allowed UDP ports";
     };
-    
+
     allowPing = lib.mkOption {
       type = lib.types.bool;
       default = if cfg.profile == "server" then true else false;
       description = "Allow ICMP ping";
     };
-    
+
     rateLimitPing = lib.mkOption {
       type = lib.types.bool;
       default = true;
       description = "Rate limit ICMP if allowed";
     };
-    
+
     logDropped = lib.mkOption {
       type = lib.types.bool;
       default = true;
       description = "Log dropped packets";
     };
-    
+
     trustedInterfaces = lib.mkOption {
       type = lib.types.listOf lib.types.str;
       default = [ ];
@@ -90,7 +90,7 @@ in
 
   config = lib.mkIf cfg.enable {
     networking.firewall.enable = false;
-    
+
     networking.nftables = {
       enable = true;
       ruleset = ''
