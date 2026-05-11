@@ -2,7 +2,6 @@
 {
   imports = [
     ./anti_virus/default.nix
-    ./requirements/default.nix
     ./compliance/default.nix
     ./fail2ban/default.nix
     ./firewall/default.nix
@@ -13,6 +12,5 @@
     ./network/default.nix
     ./ssh/default.nix
     ./sudo/default.nix
-    ./stigs/default.nix
   ];
 }

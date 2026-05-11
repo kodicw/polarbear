@@ -29,14 +29,12 @@
   */
   mkUserGroups = users:
     builtins.listToAttrs (
-      builtins.map
-        (user: {
+      builtins.map (user: {
+        name = user;
+        value = {
           name = user;
-          value = {
-            name = user;
-            gid = 1000;
-          };
-        })
-        users
+          gid = 1000;
+        };
+      }) users
     );
 }

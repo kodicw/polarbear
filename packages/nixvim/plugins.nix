@@ -102,14 +102,11 @@
         columns = {
           __raw = ''
             {
-              {
-                "type",
-                icons = {
-                  file = " ",
-                  directory = "/",
-                  link = "@",
-                }
-              },
+              { "type", icons = {
+                file = " ",
+                directory = "/",
+                link = "@",
+              } },
               "name",
             }
           '';

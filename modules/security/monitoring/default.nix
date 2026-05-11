@@ -13,7 +13,7 @@ in
 
   config = lib.mkIf cfg.enable {
     services.telegraf.enable = true;
-
+    
     services.telegraf.extraConfig.inputs = {
       auditd = lib.mkIf config.security.auditd.enable [{
         files = [ "/var/log/audit/audit.log" ];
@@ -54,9 +54,9 @@ in
       }];
 
       systemd_units = [{ }];
-
+      
       kernel = [{ }];
-
+      
       netstat = [{ }];
 
       exec = lib.flatten [
