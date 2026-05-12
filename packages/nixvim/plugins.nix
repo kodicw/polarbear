@@ -53,16 +53,23 @@
     wtf.enable = true;
     vim-surround.enable = true;
 
-    cmp-ai = {
+    llm = {
       enable = true;
       settings = {
-        max_lines = 100;
-        provider = "Ollama";
-        provider_options = {
-          model = "qwen2.5-coder:0.5b";
+        backend = "ollama";
+        model = "qwen2.5-coder:0.5b";
+        url = "http://localhost:11434";
+        request_body = {
+          options = {
+            temperature = 0.2;
+            top_p = 0.95;
+          };
         };
-        notify = true;
-        notify_callback = "function(msg) vim.notify(msg) end";
+        accept_keymap = "<C-y>";
+        dismiss_keymap = "<C-e>";
+        context_window = 1024;
+        debounce_ms = 200;
+        enable_suggestions_on_startup = true;
       };
     };
 
@@ -99,7 +106,6 @@
         completion.autoImport = true;
         snippet.expand = "luasnip";
         sources = [
-          { name = "cmp_ai"; }
           { name = "nvim_lsp"; }
           { name = "path"; }
           { name = "luasnip"; }
