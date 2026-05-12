@@ -4,7 +4,22 @@
       enable = true;
       folding = false;
       nixvimInjections = true;
-      grammarPackages = pkgs.vimPlugins.nvim-treesitter.allGrammars;
+      grammarPackages = with pkgs.vimPlugins.nvim-treesitter.builtGrammars; [
+        bash
+        html
+        json
+        lua
+        markdown
+        markdown_inline
+        nim
+        nix
+        python
+        rust
+        toml
+        yaml
+        vim
+        vimdoc
+      ];
     };
 
     treesitter-textobjects = {

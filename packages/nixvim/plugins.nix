@@ -4,22 +4,9 @@
     nvim-nu
   ];
   plugins = {
-    none-ls.enable = true;
     lsp-lines.enable = true;
     web-devicons.enable = false;
-    chadtree = {
-      enable = true;
-      settings = {
-        theme = {
-          icon_glyph_set = "ascii";
-        };
-      };
-    };
     nix.enable = true;
-    image = {
-      enable = true;
-    };
-    noice.enable = true;
     todo-comments = {
       enable = true;
       settings = {
@@ -28,31 +15,6 @@
     };
     toggleterm.enable = true;
     neogit.enable = true;
-    dap = {
-      enable = true;
-      adapters.executables.lldb = {
-        command = "${pkgs.lldb}/bin/lldb-vscode";
-      };
-      configurations.rust = [
-        {
-          name = "Launch";
-          type = "lldb";
-          request = "launch";
-          program = {
-            __raw = ''
-              function()
-                return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/target/debug/', 'file')
-              end
-            '';
-          };
-          cwd = "\${workspaceFolder}";
-          stopOnEntry = false;
-        }
-      ];
-    };
-    dap-python.enable = true;
-    dap-ui.enable = true;
-    dap-virtual-text.enable = true;
     multicursors.enable = true;
     endwise.enable = true;
     mini = {
@@ -60,9 +22,6 @@
       modules = {
         comment = { };
       };
-    };
-    avante = {
-      enable = true;
     };
     bufferline = {
       enable = true;
@@ -93,6 +52,19 @@
     };
     wtf.enable = true;
     vim-surround.enable = true;
+
+    cmp-ai = {
+      enable = true;
+      settings = {
+        max_lines = 100;
+        provider = "Ollama";
+        provider_options = {
+          model = "qwen2.5-coder:0.5b";
+        };
+        notify = true;
+        notify_callback = "function(msg) vim.notify(msg) end";
+      };
+    };
 
     oil = {
       enable = true;
@@ -127,16 +99,11 @@
         completion.autoImport = true;
         snippet.expand = "luasnip";
         sources = [
+          { name = "cmp_ai"; }
           { name = "nvim_lsp"; }
           { name = "path"; }
           { name = "luasnip"; }
           { name = "buffer"; }
-          { name = "treesitter"; }
-          { name = "calc"; }
-          { name = "dictionary"; }
-          { name = "emoji"; }
-          { name = "snippy"; }
-          { name = "spell"; }
         ];
         mapping = {
           "<C-d>" = "cmp.mapping.scroll_docs(-4)";

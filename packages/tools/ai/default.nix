@@ -4,5 +4,6 @@ pkgs.buildEnv {
   paths = with pkgs; [
     gemini-cli
     aider-chat-full
+    ollama
   ];
 }

@@ -8,13 +8,6 @@
       };
     }
     {
-      action = "<cmd>CHADopen<CR>";
-      key = "<leader>l";
-      options = {
-        desc = "Open CHADTree";
-      };
-    }
-    {
       action = "<cmd>Neogit<CR>";
       key = "<leader>g";
       options = {
@@ -61,48 +54,6 @@
       key = "<leader>d";
       options = {
         desc = "Show diagnostics";
-      };
-    }
-    {
-      action = "<cmd>DapToggleBreakpoint<CR>";
-      key = "<leader>db";
-      options = {
-        desc = "Toggle breakpoint";
-      };
-    }
-    {
-      action = "<cmd>DapContinue<CR>";
-      key = "<leader>dc";
-      options = {
-        desc = "Start/Continue debugging";
-      };
-    }
-    {
-      action = "<cmd>DapStepOver<CR>";
-      key = "<leader>dn";
-      options = {
-        desc = "Step over";
-      };
-    }
-    {
-      action = "<cmd>DapStepInto<CR>";
-      key = "<leader>di";
-      options = {
-        desc = "Step into";
-      };
-    }
-    {
-      action = "<cmd>DapStepOut<CR>";
-      key = "<leader>do";
-      options = {
-        desc = "Step out";
-      };
-    }
-    {
-      action = "<cmd>DapTerminate<CR>";
-      key = "<leader>dt";
-      options = {
-        desc = "Terminate debugging";
       };
     }
   ];

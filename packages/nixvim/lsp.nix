@@ -85,10 +85,6 @@
       enable = true;
     };
 
-    nixd = {
-      enable = true;
-    };
-
     systemd_ls = {
       enable = true;
     };
@@ -101,8 +97,8 @@
 
     rust_analyzer = {
       enable = true;
-      installCargo = true;
-      installRustc = true;
+      installCargo = false;
+      installRustc = false;
       settings = {
         checkOnSave = true;
         check.command = "clippy";
