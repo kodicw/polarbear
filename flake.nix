@@ -24,52 +24,64 @@
     ,
     }@inputs:
     let
-      system = "x86_64-linux";
-      pkgs = import nixpkgs { inherit system; };
-      unfreepkgs = import nixpkgs {
-        inherit system;
-        config.allowUnfree = true;
-      };
+      supportedSystems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
+      forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
     in
     {
       lib = import ./lib;
 
-      packages.${system} = {
-        nixvim = nixvim.legacyPackages."${system}".makeNixvimWithModule {
-          inherit pkgs;
-          module = import ./packages/nixvim;
-        };
+      packages = forAllSystems (system:
+        let
+          pkgs = import nixpkgs { inherit system; };
+          unfreepkgs = import nixpkgs {
+            inherit system;
+            config.allowUnfree = true;
+          };
+        in
+        {
+          nixvim = nixvim.legacyPackages."${system}".makeNixvimWithModule {
+            inherit pkgs;
+            module = import ./packages/nixvim;
+          };
 
-        docs = pkgs.runCommand "polarbear-docs"
-          {
-            preferLocalBuild = true;
-          } ''
-          mkdir -p $out
-          ${nixdoc.packages.x86_64-linux.default}/bin/nixdoc \
-            --file ${./lib}/default.nix \
-            --category "" \
-            --description "Polarbear library functions" \
-            > "$out/index.md"
-        '';
+          docs = pkgs.runCommand "polarbear-docs"
+            {
+              preferLocalBuild = true;
+            } ''
+            mkdir -p $out
+            ${nixdoc.packages.${system}.default}/bin/nixdoc \
+              --file ${./lib}/default.nix \
+              --category "" \
+              --description "Polarbear library functions" \
+              > "$out/index.md"
+          '';
 
-        tools-net = import ./packages/tools/networking { inherit pkgs; };
-        tools-ssh = import ./packages/tools/ssh { inherit pkgs; };
-        tools-nix = import ./packages/tools/nix { inherit pkgs; };
-        tools-sre = import ./packages/tools/sre { inherit pkgs; };
-        tools-ai = import ./packages/tools/ai { inherit pkgs; };
-        tools-red = import ./packages/tools/red { inherit pkgs; };
-        dev-python = import ./packages/development/python { inherit pkgs; };
-        dev-tools = import ./packages/development/tools { inherit pkgs; };
-        dev-android = import ./packages/development/android { pkgs = unfreepkgs; };
-        desktop-apps = import ./packages/desktop { pkgs = unfreepkgs; };
-        gaming = import ./packages/gaming { pkgs = unfreepkgs; };
-      };
+          tools-net = import ./packages/tools/networking { inherit pkgs; };
+          tools-ssh = import ./packages/tools/ssh { inherit pkgs; };
+          tools-nix = import ./packages/tools/nix { inherit pkgs; };
+          tools-sre = import ./packages/tools/sre { inherit pkgs; };
+          tools-ai = import ./packages/tools/ai { inherit pkgs; };
+          tools-red = import ./packages/tools/red { inherit pkgs; };
+          dev-python = import ./packages/development/python { inherit pkgs; };
+          dev-tools = import ./packages/development/tools { inherit pkgs; };
+          dev-android = import ./packages/development/android { pkgs = unfreepkgs; };
+          desktop-apps = import ./packages/desktop { pkgs = unfreepkgs; };
+          gaming = import ./packages/gaming { pkgs = unfreepkgs; };
+        }
+      );
 
-      devShells.${system}.default = pkgs.mkShell {
-        packages = with pkgs; [
-          nixpkgs-fmt
-        ];
-      };
+      devShells = forAllSystems (system:
+        let
+          pkgs = import nixpkgs { inherit system; };
+        in
+        {
+          default = pkgs.mkShell {
+            packages = with pkgs; [
+              nixpkgs-fmt
+            ];
+          };
+        }
+      );
 
       nixosModules = {
         # Modules

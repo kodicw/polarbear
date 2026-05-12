@@ -4,36 +4,36 @@
 }:
 let
   cfg = config.sec.bestPractices.firewall;
-  
+
   tcpPorts = lib.concatMapStringsSep ", " toString cfg.allowedTCPPorts;
   udpPorts = lib.concatMapStringsSep ", " toString cfg.allowedUDPPorts;
-  
+
   desktopRules = ''
     tcp flags syn tcp option maxseg size 1-536 drop comment "Drop SYN with suspicious MSS"
-    
+
     tcp flags & (fin|syn|rst|ack) == fin|syn drop comment "Drop FIN+SYN packets"
     tcp flags & (fin|syn|rst|ack) == fin|rst drop comment "Drop FIN+RST packets"
     tcp flags & (syn|rst) == syn|rst drop comment "Drop SYN+RST packets"
     tcp flags & (fin|syn) == fin|syn drop comment "Drop FIN+SYN packets"
     tcp flags & (fin|ack) == fin drop comment "Drop FIN without ACK"
     tcp flags & (psh|ack) == psh drop comment "Drop PSH without ACK"
-    
+
     tcp flags & (fin|syn|rst|psh|ack|urg) == 0 drop comment "Drop NULL packets"
     tcp flags & (fin|syn|rst|psh|ack|urg) == fin|syn|rst|psh|ack|urg drop comment "Drop XMAS packets"
 
     tcp flags syn tcp sport 0-1023 limit rate 1/second burst 5 packets accept comment "Rate limit privileged ports"
   '';
-  
+
   serverRules = ''
     tcp flags syn tcp option maxseg size 1-536 drop comment "Drop SYN with suspicious MSS"
-    
+
     tcp flags & (fin|syn|rst|ack) == fin|syn drop comment "Drop FIN+SYN packets"
     tcp flags & (fin|syn|rst|ack) == fin|rst drop comment "Drop FIN+RST packets"
     tcp flags & (syn|rst) == syn|rst drop comment "Drop SYN+RST packets"
     tcp flags & (fin|syn) == fin|syn drop comment "Drop FIN+SYN packets"
     tcp flags & (fin|ack) == fin drop comment "Drop FIN without ACK"
     tcp flags & (psh|ack) == psh drop comment "Drop PSH without ACK"
-    
+
     tcp flags & (fin|syn|rst|psh|ack|urg) == 0 drop comment "Drop NULL packets"
     tcp flags & (fin|syn|rst|psh|ack|urg) == fin|syn|rst|psh|ack|urg drop comment "Drop XMAS packets"
 
@@ -44,43 +44,43 @@ in
 {
   options.sec.bestPractices.firewall = {
     enable = lib.mkEnableOption "Hardened nftables firewall";
-    
+
     profile = lib.mkOption {
       type = lib.types.enum [ "desktop" "server" ];
       default = "desktop";
       description = "Firewall profile (desktop: strict, server: optimized for services)";
     };
-    
+
     allowedTCPPorts = lib.mkOption {
       type = lib.types.listOf lib.types.int;
       default = [ ];
       description = "Allowed TCP ports";
     };
-    
+
     allowedUDPPorts = lib.mkOption {
       type = lib.types.listOf lib.types.int;
       default = [ ];
       description = "Allowed UDP ports";
     };
-    
+
     allowPing = lib.mkOption {
       type = lib.types.bool;
       default = if cfg.profile == "server" then true else false;
       description = "Allow ICMP ping";
     };
-    
+
     rateLimitPing = lib.mkOption {
       type = lib.types.bool;
       default = true;
       description = "Rate limit ICMP if allowed";
     };
-    
+
     logDropped = lib.mkOption {
       type = lib.types.bool;
       default = true;
       description = "Log dropped packets";
     };
-    
+
     trustedInterfaces = lib.mkOption {
       type = lib.types.listOf lib.types.str;
       default = [ ];
@@ -90,7 +90,7 @@ in
 
   config = lib.mkIf cfg.enable {
     networking.firewall.enable = false;
-    
+
     networking.nftables = {
       enable = true;
       ruleset = ''
@@ -117,7 +117,7 @@ in
               ip protocol icmp icmp type echo-request accept comment "Allow ping"
               ip6 nexthdr icmpv6 icmpv6 type echo-request accept comment "Allow ping"
             '')}
-            
+
             ${lib.optionalString (cfg.profile == "server") ''
               ip protocol icmp icmp type { destination-unreachable, time-exceeded, parameter-problem } accept comment "Allow ICMP errors"
               ip6 nexthdr icmpv6 icmpv6 type { destination-unreachable, packet-too-big, time-exceeded, parameter-problem } accept comment "Allow ICMPv6 errors"
@@ -136,25 +136,25 @@ in
             ${lib.optionalString cfg.logDropped ''
               limit rate 5/minute burst 10 packets log prefix "nftables drop: " level info
             ''}
-            
+
             counter drop comment "Drop all other traffic"
           }
 
           chain forward {
             type filter hook forward priority filter
             policy drop
-            
+
             ${lib.optionalString cfg.logDropped ''
               limit rate 5/minute burst 10 packets log prefix "nftables forward drop: " level info
             ''}
-            
+
             counter drop
           }
 
           chain output {
             type filter hook output priority filter
             policy accept
-            
+
             counter accept
           }
         }
