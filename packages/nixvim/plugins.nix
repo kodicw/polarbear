@@ -4,6 +4,7 @@
     nvim-nu
   ];
   plugins = {
+    none-ls.enable = true;
     lsp-lines.enable = true;
     web-devicons.enable = false;
     nix.enable = true;

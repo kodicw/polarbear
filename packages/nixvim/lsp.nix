@@ -85,6 +85,10 @@
       enable = true;
     };
 
+    nixd = {
+      enable = true;
+    };
+
     systemd_ls = {
       enable = true;
     };
