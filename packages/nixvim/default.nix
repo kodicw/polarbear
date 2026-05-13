@@ -41,6 +41,8 @@
   };
   viAlias = true;
   vimAlias = true;
+  withRuby = false;
+  withNodeJs = false;
   clipboard.register = "unnamedplus";
   colorschemes.oxocarbon.enable = true;
   clipboard.providers.wl-copy.enable = true;
