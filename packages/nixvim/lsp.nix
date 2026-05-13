@@ -59,21 +59,16 @@
     };
 
     html = {
+      enable = false;
+    };
+    superhtml = {
       enable = true;
     };
     lua_ls = {
       enable = true;
     };
 
-    yamlls = {
-      enable = true;
-    };
-
-    jsonls = {
-      enable = true;
-    };
-
-    pyright = {
+    biome = {
       enable = true;
     };
 
@@ -92,8 +87,6 @@
     zls = {
       enable = true;
     };
-
-    bashls.enable = true;
 
     rust_analyzer = {
       enable = true;
