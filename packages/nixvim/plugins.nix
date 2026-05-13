@@ -54,32 +54,6 @@
     wtf.enable = true;
     vim-surround.enable = true;
 
-    llm = {
-      enable = true;
-      settings = {
-        backend = "ollama";
-        model = "qwen2.5-coder:0.5b-base";
-        url = "http://localhost:11434";
-        request_body = {
-          options = {
-            temperature = 0.2;
-            top_p = 0.95;
-          };
-        };
-        fim = {
-          enabled = true;
-          prefix = "<|fim_prefix|>";
-          middle = "<|fim_middle|>";
-          suffix = "<|fim_suffix|>";
-        };
-        accept_keymap = "<C-y>";
-        dismiss_keymap = "<C-e>";
-        context_window = 1024;
-        debounce_ms = 200;
-        enable_suggestions_on_startup = true;
-      };
-    };
-
     oil = {
       enable = true;
       settings = {

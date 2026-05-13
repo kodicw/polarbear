@@ -76,6 +76,15 @@
       enable = true;
     };
 
+    pylsp = {
+      enable = true;
+      settings = {
+        plugins = {
+          rope_autoimport.enable = true;
+        };
+      };
+    };
+
     nil_ls = {
       enable = true;
     };
