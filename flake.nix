@@ -77,6 +77,7 @@
         {
           default = pkgs.mkShell {
             packages = with pkgs; [
+              git
               nixpkgs-fmt
             ];
           };
